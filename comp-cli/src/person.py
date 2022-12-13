@@ -50,9 +50,15 @@ def hotspot(ip):
         ip = '192.168.12.43'
     sock = socket.socket()
     sock.bind((ip, 9090))
+    re.sub(r"(a)(b)(c)", r"\1, \9, \3", "abc")
+
 #TODO
+
 def hotspot2(ip2):
     if ip2 is None:
         ip2 = '192.168.12.56'
     sock = socket.socket()
     sock.bind((ip2, 9090))
+
+def configure_app(app):
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://user:@domain.com"

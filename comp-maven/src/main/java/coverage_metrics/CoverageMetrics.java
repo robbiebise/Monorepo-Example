@@ -1,5 +1,7 @@
 package coverage_metrics;
 
+import java.security.SecureRandom;
+
 /*
 *
 * This class provides example of SonarQube size metrics
@@ -71,20 +73,30 @@ public static String toNada(int base10Num){
   return result;
 }
 /*
-     * pre: cal != null
-     * post: return true if val consists only of characters 1 and 0, false otherwise
-     */
-    public static boolean all0sAnd1s(String val){
-      assert val != null : "Failed precondition all0sAnd1s. parameter cannot be null";
-      boolean all = true;
-      int i = 0;
-      char c;
-      
-      while(all && i < val.length()){
-          c = val.charAt(i);
-          all = c == '0' || c == '1';
-          i++;
-      }
-      return all;
+  * pre: cal != null
+  * post: return true if val consists only of characters 1 and 0, false otherwise
+  */
+public static boolean all0sAnd1s(String val){
+  assert val != null : "Failed precondition all0sAnd1s. parameter cannot be null";
+  boolean all = true;
+  int i = 0;
+  char c;
+  
+  while(all && i < val.length()){
+      c = val.charAt(i);
+      all = c == '0' || c == '1';
+      i++;
   }
+  return all;
+}
+public int generateRandom(){
+  SecureRandom sr = new SecureRandom();
+  sr.setSeed(123456L); // Noncompliant
+  int v = sr.next(32);
+  
+  sr = new SecureRandom("abcdefghijklmnop".getBytes("us-ascii")); // Noncompliant
+  v = sr.next(32);
+  return v;
+}
+
 }
