@@ -91,10 +91,10 @@ public static boolean all0sAnd1s(String val){
 }
 private int generateRandom() throws java.io.UnsupportedEncodingException{
   SecureRandom sr = new SecureRandom();
-  sr.setSeed(123456L); // Noncompliant
+  sr.setSeed(123456L);
   int v = sr.nextInt(32);
   
-  sr = new SecureRandom("abcdefghijklmnop".getBytes("us-ascii")); // Noncompliant
+  sr = new SecureRandom("abcdefghijklmnop".getBytes("us-ascii"));
   v = sr.nextInt(32);
   return v;
 }
