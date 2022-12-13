@@ -38,8 +38,6 @@ scan-cli:
     - apk add coreutils
   script:
     - cd comp-cli
-    - ls -l ${ARTIFACT_DIR}
-    - cat ${ARTIFACT_DIR}/*.out ${ARTIFACT_DIR}/*.txt ${ARTIFACT_DIR}/*.xml
     - sonar-scanner -Dsonar.qualitygate.wait=true -X
     - cd -
   allow_failure: false
