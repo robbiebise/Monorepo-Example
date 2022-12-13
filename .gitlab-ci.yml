@@ -1,0 +1,178 @@
+# Variables defined outside the scope of a job apply to all jobs
+# Variables defined inside the scope of a job apply to that job only
+variables:
+  GIT_DEPTH: 0
+  ARTIFACT_DIR: build
+
+# stages is a list of job "stages" that will run sequentially
+# In the below case 1) run-test 2) lint and 3) scan
+# Each stage can be composed of several jobs that will run in parallel
+
+stages:
+- build
+- test
+- lint
+- scan
+
+
+# Job names can be the same as stage name ("build-python" could be "build" here)
+# Jobs can be in any order in the YAML, the "stages" and/or "needs" specifications define the order
+# Settings for SonarQube
+scan-cli:
+  image:
+    # Use different docker image for scanner
+    name: sonarsource/sonar-scanner-cli:latest
+  cache:
+    # Use a cache key that's common to all jobs running the scanner
+    key: "sonarscanner-${CI_PROJECT_NAME}"
+    paths:
+      - .sonar/cache
+  stage: scan
+  needs:
+    # Specify which earlier jobs artifacts are needed
+  before_script:
+    - apk add --update --no-cache python3 py3-pip
+    - pip install sonar-tools
+    - apk add curl
+    # To get minimum Linux cmd line tools (eg "tail")
+    - apk add coreutils
+  script:
+    - cd comp-cli
+    - ls -l ${ARTIFACT_DIR}
+    - cat ${ARTIFACT_DIR}/*.out ${ARTIFACT_DIR}/*.txt ${ARTIFACT_DIR}/*.xml
+    - sonar-scanner -Dsonar.qualitygate.wait=true -X
+    - cd -
+  allow_failure: false
+  only:
+    refs:
+      - merge_requests
+      - main
+      - develop
+    # Run stage only if files impacting that component are changed
+    # (Don't reanalyze the whole monorepo if not needed)
+    changes:
+      - .gitlab-ci.yml
+      - .gitignore
+      - comp-cli/**/*
+
+# Run a 3nd scanner in parallel for 3nd monorepo component (.Net core)
+scan-dotnet:
+  image:
+    name: mcr.microsoft.com/dotnet/sdk:3.1
+    # name: mcr.microsoft.com/dotnet/core/sdk:2.2.301
+  cache:
+    key: "sonarscanner-${CI_PROJECT_NAME}"
+    paths:
+      - .sonar/cache
+  stage: scan
+  before_script:
+    # Install scanner for .Net Core and set the PATH
+    - dotnet tool install dotnet-sonarscanner --global
+    - export PATH="$PATH:/root/.dotnet/tools"
+    # Install Java for scanner end
+    # - apt-get update && apt-get install openjdk-11-jdk
+    - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -yq install openjdk-11-jdk
+  script:
+    - cd comp-dotnet
+    - dotnet sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=$SONAR_HOST_URL" /d:"sonar.login=$SONAR_TOKEN" /d:"sonar.qualitygate.wait=true"
+    - dotnet build dotnetcore-sample.sln
+    # -Dsonar.qualitygate.wait=true not supported for scanner for .Net, how do I fail the pipeline :-( ?
+    - dotnet sonarscanner end /d:"sonar.login=$SONAR_TOKEN"
+    - cd -
+  allow_failure: false
+  only:
+    refs:
+      - merge_requests
+      - main
+      - develop
+      - /^.*(fast|aio|all-in-one)\/.*$/
+    changes:
+      - .gitlab-ci.yml
+      - .gitignore
+      - comp-dotnet/*.sln
+      - comp-dotnet/project/*.cs*
+
+scan-maven:
+  image:
+    name: maven:latest
+  stage: scan
+  variables:
+    MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+    MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  cache:
+    key: "maven-${CI_PROJECT_NAME}"
+    paths:
+      - .m2/repository/
+      - target/
+  script:
+    - cd comp-maven
+    - >
+      mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report
+      sonar:sonar
+      -Dsonar.qualitygate.wait=true
+    - cd -
+  allow_failure: false
+  only:
+    refs:
+      - merge_requests
+      - main
+      - develop
+      - /^.*(fast|aio|all-in-one)\/.*$/
+    changes:
+      - .gitlab-ci.yml
+      - .gitignore
+      - comp-maven/src/**/*
+      - comp-maven/pom.xml
+
+scan-gradle:
+  image:
+    name: gradle:6.3.0-jdk11
+  stage: scan
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+  script: gradle --build-cache assemble
+  cache:
+    key: "gradle-${CI_PROJECT_NAME}"
+    policy: push
+    paths:
+      - comp-gradle/build
+      - .gradle
+  script:
+    - cd comp-gradle
+    - ./gradlew build sonarqube --info -Dsonar.qualitygate.wait=true
+    - cd -
+  allow_failure: false
+  only:
+    refs:
+      - merge_requests
+      - main
+      - develop
+      - /^.*(fast|aio|all-in-one)\/.*$/
+    changes:
+      - .gitlab-ci.yml
+      - .gitignore
+      - comp-gradle/*
+      - comp-gradle/src/**/*
+
+    
+scan-cli-aio:
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+  cache:
+    key: "sonarscanner-${CI_PROJECT_NAME}"
+    paths:
+      - .sonar/cache
+  stage: scan
+  script:
+    - cd comp-cli
+    - sonar-scanner -Dsonar.qualitygate.wait=true -X
+    - cd -
+  allow_failure: false
+  only:
+    refs:
+      - /^.*(fast|aio|all-in-one)\/.*$/
+      - /^.*aio\/.*$/
+      - /^.*all-in-one.*$/
