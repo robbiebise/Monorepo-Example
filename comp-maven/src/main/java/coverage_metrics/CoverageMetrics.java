@@ -76,7 +76,7 @@ public static String toNada(int base10Num){
   * pre: cal != null
   * post: return true if val consists only of characters 1 and 0, false otherwise
   */
-public static boolean all0sAnd1s(String val) throws java.io.UnsupportedEncodingException{
+public static boolean all0sAnd1s(String val){
   assert val != null : "Failed precondition all0sAnd1s. parameter cannot be null";
   boolean all = true;
   int i = 0;
@@ -89,7 +89,7 @@ public static boolean all0sAnd1s(String val) throws java.io.UnsupportedEncodingE
   }
   return all;
 }
-private int generateRandom(){
+private int generateRandom() throws java.io.UnsupportedEncodingException{
   SecureRandom sr = new SecureRandom();
   sr.setSeed(123456L); // Noncompliant
   int v = sr.nextInt(32);
