@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = dotnet_sample
+build_property.ProjectDir = /Users/yacine.maghezzi/Documents/repositories/monorepo-gitlab/comp-dotnet/project/
