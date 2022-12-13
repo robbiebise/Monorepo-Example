@@ -98,12 +98,24 @@ private int generateRandom() throws java.io.UnsupportedEncodingException{
   v = sr.nextInt(32);
   return v;
 }
-
+  public int lengthPlus(String str) {
+    int len = 2;
+    try {
+      len += str.length();
+    }
+    catch (NullPointerException e) {
+      log.info("argument was null");
+    }
+    return len;
+  }
 
   public static void main(String[] args) {
     String message = "myscret";
     System.out.println(message.toString());
-
+    //TODO modify this part
+    String user = "Yass"
+    String pass = "Pass"
+    String expression = "/users/user[@name='" + user + "' and @pass='" + pass + "']";
   }
 
 
