@@ -113,8 +113,8 @@ private int generateRandom() throws java.io.UnsupportedEncodingException{
     String message = "myscret";
     System.out.println(message.toString());
     //TODO modify this part
-    String user = "Yass"
-    String pass = "Pass"
+    String user = "Yass";
+    String pass = "Pass";
     String expression = "/users/user[@name='" + user + "' and @pass='" + pass + "']";
   }
 
