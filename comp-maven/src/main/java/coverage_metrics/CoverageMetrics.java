@@ -100,11 +100,12 @@ private int generateRandom() throws java.io.UnsupportedEncodingException{
 }
   public int lengthPlus(String str) {
     int len = 2;
+    Logger logger = Logger.getLogger(CoverageMetrics.class.getName());
     try {
       len += str.length();
     }
     catch (NullPointerException e) {
-      log.info("argument was null");
+      logger.info("argument was null");
     }
     return len;
   }
