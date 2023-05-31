@@ -19,6 +19,7 @@ class Person:
         self.compensation = 0
 
     def store_religion(self, religion):
+        # TODO: something else
         self.religion = religion
 
     def compute_pay(self):
