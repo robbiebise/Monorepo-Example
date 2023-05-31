@@ -1,3 +1,17 @@
+name: SonarQube Maven Scan
+
+on:
+  push:
+    branches:
+      - merge_requests
+      - master
+      - develop
+    paths:
+      - .github/workflows/maven-scan.yaml
+      - .gitignore
+      - comp-maven/src/**/*
+      - comp-maven/pom.xml
+  workflow_dispatch:
 jobs:
   scan-maven:
     name: SonarQube Scan for Maven
