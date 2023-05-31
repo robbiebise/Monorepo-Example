@@ -22,6 +22,7 @@ class Person:
         self.religion = religion
 
     def compute_pay(self):
+        # TODO: something
         if self.gender == Person.MALE:
             self.compensation = SOME_VALUE
         elif self.gender == Person.FEMALE:
