@@ -23,6 +23,8 @@ class Person:
 
     def compute_pay(self):
         # TODO: something
+        # TODO: something
+        # TODO: something
         if self.gender == Person.MALE:
             self.compensation = SOME_VALUE
         elif self.gender == Person.FEMALE:
