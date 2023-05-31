@@ -6,6 +6,12 @@ on:
       - merge_requests
       - master
       - develop
+    paths:
+      - .github/workflows/dotnet-scan.yaml
+      - .gitignore
+      - comp-dotnet/*.sln
+      - comp-dotnet/project/*.cs*
+
   workflow_dispatch:
 
 env:
