@@ -1,4 +1,4 @@
-name: SonarQube Scan
+name: SonarQube CLI Python Scan
 
 on:
   push:
@@ -6,6 +6,11 @@ on:
       - merge_requests
       - master
       - develop
+    paths:
+      - .github/workflows/cli-scan.yaml
+      - .gitignore
+      - comp-cli/**/*
+
   workflow_dispatch:
 
 env:
