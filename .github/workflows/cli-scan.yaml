@@ -22,6 +22,8 @@ jobs:
     name: SonarQube Scan for CLI
     runs-on: ubuntu-latest
     steps:
+      - name: ls
+        run: ls -a
       - name: cd comp-cli
         run: cd comp-cli
       - uses: actions/checkout@v2
