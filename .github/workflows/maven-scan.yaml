@@ -7,10 +7,10 @@ on:
       - master
       - develop
     paths:
-      - .github/workflows/maven-scan.yaml
-      - .gitignore
-      - comp-maven/src/**/*
-      - comp-maven/pom.xml
+      - '.github/workflows/maven-scan.yaml'
+      - '.gitignore'
+      - 'comp-maven/src/**/*'
+      - 'comp-maven/pom.xml'
   workflow_dispatch:
 jobs:
   scan-maven:

@@ -7,10 +7,10 @@ on:
       - master
       - develop
     paths:
-      - .github/workflows/dotnet-scan.yaml
-      - .gitignore
-      - comp-dotnet/*.sln
-      - comp-dotnet/project/*.cs*
+      - '.github/workflows/dotnet-scan.yaml'
+      - '.gitignore'
+      - 'comp-dotnet/*.sln'
+      - 'comp-dotnet/project/*.cs*'
 
   workflow_dispatch:
 
@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: cd comp-dotnet
+        run: cd comp-dotnet
       - name: Checkout Repository
         uses: actions/checkout@v2
 
