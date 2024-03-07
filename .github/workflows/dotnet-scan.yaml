@@ -42,8 +42,8 @@ jobs:
           java-version: '11'
 
       - name: Build and Analyze with SonarScanner for .NET Core
+        working-directory: ./comp-dotnet
         run: |
-          cd comp-dotnet
           dotnet sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=${{ env.SONAR_HOST_URL }}" /d:"sonar.login=${{ env.SONAR_TOKEN }}" /d:"sonar.qualitygate.wait=true"
           dotnet build dotnetcore-sample.sln
           dotnet sonarscanner end /d:"sonar.login=${{ env.SONAR_TOKEN }}"
