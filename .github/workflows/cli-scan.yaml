@@ -27,6 +27,7 @@ jobs:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: cd comp-cli
         run: cd comp-cli
+      - name: ls -la
         run: ls -la
       - uses: sonarsource/sonarqube-scan-action@master
         env:
