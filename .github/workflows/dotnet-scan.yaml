@@ -35,16 +35,39 @@ jobs:
       - name: Install SonarScanner for .NET Core
         run: |
           dotnet tool install --global dotnet-sonarscanner
-
-      - name: Set up Java for SonarScanner
-        uses: actions/setup-java@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
         with:
-          java-version: '17'
-
-      - name: Build and Analyze with SonarScanner for .NET Core
+          java-version: 17
+      - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~\.sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache SonarQube scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Install SonarQube scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
         run: |
-          cd ./comp-dotnet
-          dotnet sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=${{ env.SONAR_HOST_URL }}" /d:"sonar.login=${{ env.SONAR_TOKEN }}" /d:"sonar.qualitygate.wait=true"
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Build and analyze
+        shell: powershell
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=${{ env.SONAR_HOST_URL }}" /d:"sonar.login=${{ env.SONAR_TOKEN }}"
           dotnet build dotnetcore-sample.sln
-          dotnet sonarscanner end /d:"sonar.login=${{ env.SONAR_TOKEN }}"
-          cd -
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      # - name: Build and Analyze with SonarScanner for .NET Core
+      #   run: |
+      #     cd ./comp-dotnet
+      #     dotnet sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=${{ env.SONAR_HOST_URL }}" /d:"sonar.login=${{ env.SONAR_TOKEN }}" /d:"sonar.qualitygate.wait=true"
+      #     dotnet build dotnetcore-sample.sln
+      #     dotnet sonarscanner end /d:"sonar.login=${{ env.SONAR_TOKEN }}"
+      #     cd -
