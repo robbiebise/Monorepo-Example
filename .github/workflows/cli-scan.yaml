@@ -7,9 +7,9 @@ on:
       - master
       - develop
     paths:
-      - .github/workflows/cli-scan.yaml
-      - .gitignore
-      - comp-cli/**/*
+      - '.github/workflows/cli-scan.yaml'
+      - '.gitignore'
+      - 'comp-cli/**/*'
 
   workflow_dispatch:
 
