@@ -41,4 +41,5 @@ jobs:
       - name: Build and Analyze with Maven
         run: |
           cd ./comp-maven
-          mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.j
+          mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar
+
