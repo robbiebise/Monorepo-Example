@@ -49,6 +49,8 @@ jobs:
         shell: powershell
         run: |
           cd .\comp-dotnet
+          # print host url in powershell
+          Write-Host "SonarQube Host URL: $env:SONAR_HOST_URL"
           ..\.sonar\scanner\dotnet-sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=${{ env.SONAR_HOST_URL }}" /d:"sonar.login=${{ env.SONAR_TOKEN }}"
           dotnet build dotnetcore-sample.sln
           ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
