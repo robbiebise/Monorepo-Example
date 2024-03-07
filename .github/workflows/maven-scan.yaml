@@ -16,6 +16,7 @@ jobs:
   scan-maven:
     name: SonarQube Scan for Maven
     runs-on: ubuntu-latest
+    permissions: read-all
 
     steps:
       - name: Checkout Repository
@@ -39,6 +40,9 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and Analyze with Maven
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
           cd ./comp-maven
           mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar
