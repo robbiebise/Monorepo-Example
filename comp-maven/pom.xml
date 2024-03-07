@@ -4,10 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>demo</groupId>
-  <artifactId>gitlab-ci-mono-maven</artifactId>
+  <artifactId>mono-maven</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>GitLab-CI / monorepo Maven</name>
+  <name>Monorepo Maven</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
