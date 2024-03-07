@@ -13,10 +13,6 @@ on:
       - 'comp-dotnet/project/*.cs*'
 
   workflow_dispatch:
-
-env:
-  SONAR_HOST_URL: <SONARQUBE_URL>
-  SONAR_TOKEN: <SONARQUBE_TOKEN>
 jobs:
   build:
     name: Build
