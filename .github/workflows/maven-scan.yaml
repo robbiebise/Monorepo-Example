@@ -24,9 +24,9 @@ jobs:
       - name: Set up Maven
         uses: actions/setup-java@v2
         with:
-          java-version: '11'
+          java-version: '17'
 
       - name: Build and Analyze with Maven
-        working-directory: ./comp-maven
         run: |
+          cd ./comp-maven
           mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.j
