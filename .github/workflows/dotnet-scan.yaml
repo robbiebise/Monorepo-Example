@@ -52,10 +52,10 @@ jobs:
       - name: Build and analyze
         shell: powershell
         run: |
-          cd ./comp-dotnet
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=${{ env.SONAR_HOST_URL }}" /d:"sonar.login=${{ env.SONAR_TOKEN }}"
+          cd .\comp-dotnet
+          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=${{ env.SONAR_HOST_URL }}" /d:"sonar.login=${{ env.SONAR_TOKEN }}"
           dotnet build dotnetcore-sample.sln
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       # - name: Build and Analyze with SonarScanner for .NET Core
       #   run: |
       #     cd ./comp-dotnet
