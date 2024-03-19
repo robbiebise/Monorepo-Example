@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "Egbmk5fHNmrku42HYpPxD8NUYa2S637e6d1xXH9x6x2qvumaXRZIy7hcmbLQCFLCIfvfqn8FpGo6IfgRmMu9pA==",
+  "success": true,
+  "projectFilePath": "/Users/theil.bise/repos/monorepo/Monorepo-Example/comp-dotnet/project/dotnet-sample.csproj",
+  "expectedPackageFiles": [
+    "/Users/theil.bise/.nuget/packages/microsoft.netcore.app/2.2.0/microsoft.netcore.app.2.2.0.nupkg.sha512",
+    "/Users/theil.bise/.nuget/packages/microsoft.netcore.dotnetapphost/2.2.0/microsoft.netcore.dotnetapphost.2.2.0.nupkg.sha512",
+    "/Users/theil.bise/.nuget/packages/microsoft.netcore.dotnethostpolicy/2.2.0/microsoft.netcore.dotnethostpolicy.2.2.0.nupkg.sha512",
+    "/Users/theil.bise/.nuget/packages/microsoft.netcore.dotnethostresolver/2.2.0/microsoft.netcore.dotnethostresolver.2.2.0.nupkg.sha512",
+    "/Users/theil.bise/.nuget/packages/microsoft.netcore.platforms/2.2.0/microsoft.netcore.platforms.2.2.0.nupkg.sha512",
+    "/Users/theil.bise/.nuget/packages/microsoft.netcore.targets/2.0.0/microsoft.netcore.targets.2.0.0.nupkg.sha512",
+    "/Users/theil.bise/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
