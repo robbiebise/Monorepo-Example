@@ -45,12 +45,17 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-          Add-Path ".\.sonar\scanner"  # Add the scanner directory to the PATH
-
-      - name: Build and Analyze with SonarScanner for .NET Core
+      - name: Build and analyze
+        shell: powershell
         run: |
-          cd ./comp-dotnet
-          dotnet sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=${{ env.SONAR_HOST_URL }}" /d:"sonar.login=${{ env.SONAR_TOKEN }}" /d:"sonar.qualitygate.wait=true"
+          cd .\comp-dotnet
+          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"demo:mono-dotnet" /n:"Monorepo .Net Core" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
           dotnet build dotnetcore-sample.sln
-          dotnet sonarscanner end /d:"sonar.login=${{ env.SONAR_TOKEN }}"
-          cd -
+          ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      # - name: Build and Analyze with SonarScanner for .NET Core
+      #   run: |
+      #     cd ./comp-dotnet
+      #     dotnet sonarscanner begin /k:"demo:gitlab-ci-mono-dotnet" /n:"GitLab-CI / monorepo .Net Core" /d:"sonar.host.url=${{ env.SONAR_HOST_URL }}" /d:"sonar.login=${{ env.SONAR_TOKEN }}" /d:"sonar.qualitygate.wait=true"
+      #     dotnet build dotnetcore-sample.sln
+      #     dotnet sonarscanner end /d:"sonar.login=${{ env.SONAR_TOKEN }}"
+      #     cd -
